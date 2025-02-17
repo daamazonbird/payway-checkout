@@ -16,6 +16,7 @@
                 <input type="hidden" name="amount" value="" id="amount">
                 <input type="hidden" name="hash" value="" id="hash">
                 <input type="hidden" name="payment_option" value="cards">
+                <input type="hidden" name="req_time" value="" id="req_time">
             </form>
         </div>
     </div>
@@ -29,7 +30,17 @@
         document.getElementById('tran_id').value = urlParams.get('tran_id');
         document.getElementById('amount').value = urlParams.get('amount');
         document.getElementById('hash').value = urlParams.get('hash');
+        document.getElementById('req_time').value = urlParams.get('req_time');
         
+        // Log values for debugging
+        console.log('Form values:', {
+            merchant_id: document.getElementById('merchant_id').value,
+            tran_id: document.getElementById('tran_id').value,
+            amount: document.getElementById('amount').value,
+            hash: document.getElementById('hash').value,
+            req_time: document.getElementById('req_time').value
+        });
+
         // Auto-submit using AbaPayway
         window.onload = function() {
             AbaPayway.checkout();

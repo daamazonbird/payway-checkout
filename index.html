@@ -4,33 +4,33 @@
     <title>ABA PayWay Checkout</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://checkout.payway.com.kh/plugins/checkout2-0.js"></script>
 </head>
 <body>
-    <div id="payment-form">
-        <!-- Form will be injected here via JavaScript -->
+    <div id="aba_main_modal" class="aba-modal">
+        <div class="aba-modal-content">
+            <form method="POST" id="aba_merchant_request" action="https://checkout-sandbox.payway.com.kh/api/payment-gateway/v1/payments/purchase">
+                <input type="hidden" name="merchant_id" value="" id="merchant_id">
+                <input type="hidden" name="tran_id" value="" id="tran_id">
+                <input type="hidden" name="amount" value="" id="amount">
+                <input type="hidden" name="hash" value="" id="hash">
+                <input type="hidden" name="payment_option" value="cards">
+            </form>
+        </div>
     </div>
 
     <script>
         // Get URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const merchant_id = urlParams.get('merchant_id');
-        const tran_id = urlParams.get('tran_id');
-        const amount = urlParams.get('amount');
-        const hash = urlParams.get('hash');
-
-        // Create and submit form
-        document.getElementById('payment-form').innerHTML = `
-            <form method="POST" id="aba_merchant_request" action="https://checkout-sandbox.payway.com.kh/api/payment-gateway/v1/payments/purchase">
-                <input type="hidden" name="merchant_id" value="${merchant_id}">
-                <input type="hidden" name="tran_id" value="${tran_id}">
-                <input type="hidden" name="amount" value="${amount}">
-                <input type="hidden" name="hash" value="${hash}">
-                <input type="hidden" name="payment_option" value="cards">
-            </form>
-        `;
-
-        // Auto-submit the form
+        
+        // Fill in form values
+        document.getElementById('merchant_id').value = urlParams.get('merchant_id');
+        document.getElementById('tran_id').value = urlParams.get('tran_id');
+        document.getElementById('amount').value = urlParams.get('amount');
+        document.getElementById('hash').value = urlParams.get('hash');
+        
+        // Auto-submit using AbaPayway
         window.onload = function() {
             AbaPayway.checkout();
         }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ABA PayWay Checkout</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://checkout.payway.com.kh/plugins/checkout2-0.js"></script>
+</head>
+<body>
+    <div id="payment-form">
+        <!-- Form will be injected here via JavaScript -->
+    </div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const merchant_id = urlParams.get('merchant_id');
+        const tran_id = urlParams.get('tran_id');
+        const amount = urlParams.get('amount');
+        const hash = urlParams.get('hash');
+
+        // Create and submit form
+        document.getElementById('payment-form').innerHTML = `
+            <form method="POST" id="aba_merchant_request" action="https://checkout-sandbox.payway.com.kh/api/payment-gateway/v1/payments/purchase">
+                <input type="hidden" name="merchant_id" value="${merchant_id}">
+                <input type="hidden" name="tran_id" value="${tran_id}">
+                <input type="hidden" name="amount" value="${amount}">
+                <input type="hidden" name="hash" value="${hash}">
+                <input type="hidden" name="payment_option" value="cards">
+            </form>
+        `;
+
+        // Auto-submit the form
+        window.onload = function() {
+            AbaPayway.checkout();
+        }
+    </script>
+</body>
+</html>

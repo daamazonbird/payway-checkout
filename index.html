@@ -11,12 +11,16 @@
     </div>
 
     <form id="checkout_form" method="POST" action="https://checkout-sandbox.payway.com.kh/api/payment-gateway/v1/payments/purchase">
+        <input type="hidden" name="req_time" value="" id="req_time">
         <input type="hidden" name="merchant_id" value="" id="merchant_id">
         <input type="hidden" name="tran_id" value="" id="tran_id">
         <input type="hidden" name="amount" value="" id="amount">
-        <input type="hidden" name="hash" value="" id="hash">
         <input type="hidden" name="payment_option" value="cards">
-        <input type="hidden" name="req_time" value="" id="req_time">
+        <input type="hidden" name="type" value="purchase">
+        <input type="hidden" name="return_url" value="https://example.com/return">
+        <input type="hidden" name="continue_success_url" value="https://t.me/SalesOrderDemoBot">
+        <input type="hidden" name="currency" value="USD">
+        <input type="hidden" name="hash" value="" id="hash">
     </form>
 
     <script>
@@ -24,11 +28,11 @@
         const urlParams = new URLSearchParams(window.location.search);
         
         // Fill form fields
+        document.getElementById('req_time').value = urlParams.get('req_time');
         document.getElementById('merchant_id').value = urlParams.get('merchant_id');
         document.getElementById('tran_id').value = urlParams.get('tran_id');
         document.getElementById('amount').value = urlParams.get('amount');
         document.getElementById('hash').value = urlParams.get('hash');
-        document.getElementById('req_time').value = urlParams.get('req_time');
         
         // Submit form immediately
         document.getElementById('checkout_form').submit();

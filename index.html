@@ -6,8 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://checkout.payway.com.kh/plugins/checkout2-0.js"></script>
+    <style>
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
+    <div class="loading">
+        Loading PayWay Checkout...
+        <p id="debug"></p>
+    </div>
+
     <div id="aba_main_modal" class="aba-modal">
         <div class="aba-modal-content">
             <form method="POST" id="aba_merchant_request" action="https://checkout-sandbox.payway.com.kh/api/payment-gateway/v1/payments/purchase">
@@ -33,17 +45,32 @@
         document.getElementById('req_time').value = urlParams.get('req_time');
         
         // Log values for debugging
-        console.log('Form values:', {
+        const formValues = {
             merchant_id: document.getElementById('merchant_id').value,
             tran_id: document.getElementById('tran_id').value,
             amount: document.getElementById('amount').value,
             hash: document.getElementById('hash').value,
             req_time: document.getElementById('req_time').value
-        });
+        };
+        
+        console.log('Form values:', formValues);
+        document.getElementById('debug').innerHTML = 'Debug info: ' + JSON.stringify(formValues);
 
         // Auto-submit using AbaPayway
         window.onload = function() {
-            AbaPayway.checkout();
+            try {
+                if (!AbaPayway) {
+                    console.error('AbaPayway not loaded');
+                    document.getElementById('debug').innerHTML += '<br>Error: AbaPayway not loaded';
+                    return;
+                }
+                console.log('Starting checkout...');
+                document.getElementById('debug').innerHTML += '<br>Starting checkout...';
+                AbaPayway.checkout();
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('debug').innerHTML += '<br>Error: ' + error.message;
+            }
         }
     </script>
 </body>
